@@ -86,18 +86,19 @@ class Alignment(object):
         print ent
         print "Starting EM" 
         iter_no = 1
+        # Creating a temporary matrix to store re-estimated values after
+        # E-step at each sentence
+        temp = np.zeros((2,N,M))
+        # Creating one count  matrix which will be reused for each sentence
+        # From parallel corpus
+        count = np.zeros((N,M))
+        
         while True:
-            # Creating a temporary matrix to store re-estimated values after
-            # E-step at each sentence
-            temp = np.zeros((2,N,M))
-            # Creating one sparse matrix which will be reused for each sentence
-            # From parallel corpus
-            count = np.zeros((N,M))
+            temp.fill(0.)
             for textA, textB in zip(self.corpusA, self.corpusB):
                 # E step for estimating expected counts matrix for each sentence pair
                 # Expected count matrices for textA, textB in both corpuses
                 count.fill(0.)
-
                 freqA = {}
                 freqB = {}
                 # Calculate frequency of tokens in both corpuses
